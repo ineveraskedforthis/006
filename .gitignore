@@ -1,0 +1,13 @@
+launcher.exe
+imgui
+.vscode
+.ninja_log
+cache
+imgui.ini
+.cache
+compile_commands.json
+launcher.ilk
+launcher.pdb
+Downloads
+Games
+Tools

@@ -1,0 +1,24 @@
+
+cflags = -std=c++20 -O2 -DWIN32 -I./imgui -I./imgui/backends -g
+
+rule cc
+  command = clang++ -MD -MF $out.d $cflags $debug_flags -c $in -o $out
+  description = compile $out
+  depfile = $out.d
+
+rule link
+  command = clang++ $cflags $debug_flags_link -o $out $in -ld3d11 -lUrlmon -lWininet -Xlinker /subsystem:console
+  description = link $out
+
+build cache/imgui.o: cc imgui/imgui.cpp
+build cache/imgui_draw.o: cc imgui/imgui_draw.cpp
+build cache/imgui_demo.o: cc imgui/imgui_demo.cpp
+build cache/imgui_tables.o: cc imgui/imgui_tables.cpp
+build cache/imgui_widgets.o: cc imgui/imgui_widgets.cpp
+build cache/imgui_backend.o: cc imgui/backends/imgui_impl_dx11.cpp
+build cache/imgui_backend_win.o: cc imgui/backends/imgui_impl_win32.cpp
+build cache/imgui_stdlib.o: cc imgui/misc/cpp/imgui_stdlib.cpp
+
+build cache/launcher.o: cc main.cpp
+
+build launcher.exe: link cache/launcher.o cache/imgui.o cache/imgui_draw.o cache/imgui_demo.o cache/imgui_tables.o cache/imgui_widgets.o cache/imgui_backend.o cache/imgui_backend_win.o cache/imgui_stdlib.o
